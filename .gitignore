@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Local environment files. CI injects BASE_URL / TEST_ENV instead.
+.env
+
+# Generated reports and Playwright output. These belong in CI artifacts.
+allure-results/
+allure-report/
+test-results/
+playwright-report/
+blob-report/
+logs/

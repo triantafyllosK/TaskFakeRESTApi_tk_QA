@@ -1,7 +1,6 @@
-# TaskFakeRESTApi_tk_QA — API Automation Framework 
+# TaskFakeRESTApi_tk_QA — API Automation Framework
 
 Production-oriented API automation for the FakeRestAPI Bookstore `Books` resource. The repository is a small Software Engineer in Test project: reusable clients, typed models, runtime contract validation, failure diagnostics, Typescript+Playwright, Allure Report 3, JUnit CI results, GitHub Actions, and Docker.
-
 
 ## Project Overview
 
@@ -21,7 +20,6 @@ Authors endpoints are intentionally out of scope until the Books solution stays 
 
 The suite contains a focused set of Books scenarios (positive, negative, boundary, contract, workflow, and input robustness). Quantity is not the goal. Each test documents a real, observed behavior.
 
-
 ## Why TypeScript + Playwright
 
 Playwright is used here as an **API test platform**, not a browser automation tool.
@@ -32,7 +30,6 @@ Playwright is used here as an **API test platform**, not a browser automation to
 - The same runner produces line output, JUnit XML, and Allure results without a custom harness.
 
 This is API-only. There are no browsers, pages, locators, etc.
-
 
 ## Version Compatibility Decisions
 
@@ -46,7 +43,6 @@ Stable, verified compatibility is preferred over blindly selecting the newest pa
 
 **Playwright 1.63.0 matches allure-playwright 3.12.1**, which requires `@playwright/test >= 1.62.0`.
 
-
 ## Architecture
 
 Tests describe behavior. Clients describe HTTP. Models describe data. Schemas describe contracts. Builders describe test-data construction. Configuration describes environment. Diagnostics describe failures.
@@ -59,7 +55,6 @@ Tests → Models / Builders / Schemas / Validators / Config / Diagnostics
 ```
 
 Supporting components do not depend on test files. There is no generic `BaseApiClient`, BaseTest, or DI container. `BooksClient.send()` exists only so CRUD methods and robustness cases (for example PATCH) share diagnostics.
-
 
 ## Test Strategy
 
@@ -78,10 +73,8 @@ A successful test may assert three layers:
 2. **Contract** — AJV schema
 3. **Behavior** — returned ID equals requested ID, title echo, persistence absence
 
-
 ## Prerequisites
 
 - Node.js 24 LTS
 - npm
 - Docker (optional, for containerized runs)
-
