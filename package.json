@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "report:generate": "allure generate allure-results --output allure-report",
+    "report:generate": "node scripts/clean-allure-report.mjs && allure generate allure-results --output allure-report",
     "report:open": "allure open allure-report"
   },
   "devDependencies": {

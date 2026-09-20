@@ -9,6 +9,8 @@ import { environment } from './src/config/environment';
  */
 export default defineConfig({
   testDir: './src/tests',
+  // See src/setup/clean-allure-results.ts for CI / history constraints.
+  globalSetup: './src/setup/clean-allure-results.ts',
   timeout: 45_000,
   expect: {
     timeout: 10_000,
