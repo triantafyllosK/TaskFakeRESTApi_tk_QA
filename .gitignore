@@ -7,7 +7,21 @@ node_modules/
 # Generated reports and Playwright output. These belong in CI artifacts.
 allure-results/
 allure-report/
+# Allure 3 cross-run history. CI restores this from gh-pages; local copies stay private.
+allure-history.jsonl
 test-results/
 playwright-report/
 blob-report/
 logs/
+
+# TypeScript build output if tsc is ever run with emit.
+dist/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.log
+
+# One-off local probe leftovers
+tmp-*.json
+tmp-*.txt

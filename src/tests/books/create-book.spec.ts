@@ -144,29 +144,30 @@ test.describe('POST /api/v1/Books', () => {
     'POST /Books accepts Int32.MaxValue pageCount and rejects Int32 overflow',
     { tag: ['@negative', '@regression'] },
     async ({ booksClient }) => {
-      const maxPayload = await test.step('Build a payload with Int32.MaxValue pageCount', async () => {
-        return BookBuilder.validBook().withPageCount(INT32_MAX).build();
-      });
+      const maxPayload =
+        await test.step('Build a payload with Int32.MaxValue pageCount', async () => {
+          return BookBuilder.validBook().withPageCount(INT32_MAX).build();
+        });
 
-      const accepted = await test.step('Request POST /Books with Int32.MaxValue pageCount', async () => {
-        return booksClient.createBook(maxPayload);
-      });
+      const accepted =
+        await test.step('Request POST /Books with Int32.MaxValue pageCount', async () => {
+          return booksClient.createBook(maxPayload);
+        });
 
       await test.step('Assert HTTP 200 and pageCount equals Int32.MaxValue', async () => {
         expect(accepted.status()).toBe(200);
         expect(assertBookContract(await readJsonBody(accepted)).pageCount).toBe(INT32_MAX);
       });
 
-      const overflowPayload = await test.step(
-        'Build a payload with pageCount above Int32.MaxValue',
-        async () => {
+      const overflowPayload =
+        await test.step('Build a payload with pageCount above Int32.MaxValue', async () => {
           return BookBuilder.validBook().withPageCount(INT32_OVERFLOW).build();
-        },
-      );
+        });
 
-      const rejected = await test.step('Request POST /Books with overflowing pageCount', async () => {
-        return booksClient.createBook(overflowPayload);
-      });
+      const rejected =
+        await test.step('Request POST /Books with overflowing pageCount', async () => {
+          return booksClient.createBook(overflowPayload);
+        });
 
       await test.step('Assert HTTP 400 ProblemDetails for Int32 overflow', async () => {
         expect(rejected.status()).toBe(400);
@@ -200,16 +201,15 @@ test.describe('POST /api/v1/Books', () => {
     'POST /Books accepts special characters and Unicode in title',
     { tag: ['@robustness', '@regression'] },
     async ({ booksClient }) => {
-      const specialPayload = await test.step(
-        'Build a payload with special characters in the title',
-        async () => {
+      const specialPayload =
+        await test.step('Build a payload with special characters in the title', async () => {
           return BookBuilder.validBook().withTitle(ROBUSTNESS_TITLES.specialCharacters).build();
-        },
-      );
+        });
 
-      const special = await test.step('Request POST /Books with a special-character title', async () => {
-        return booksClient.createBook(specialPayload);
-      });
+      const special =
+        await test.step('Request POST /Books with a special-character title', async () => {
+          return booksClient.createBook(specialPayload);
+        });
 
       await test.step('Assert HTTP 200 and the special-character title is echoed', async () => {
         expect(special.status()).toBe(200);
@@ -228,7 +228,9 @@ test.describe('POST /api/v1/Books', () => {
 
       await test.step('Assert HTTP 200 and the Unicode title is echoed', async () => {
         expect(unicode.status()).toBe(200);
-        expect(assertBookContract(await readJsonBody(unicode)).title).toBe(ROBUSTNESS_TITLES.unicode);
+        expect(assertBookContract(await readJsonBody(unicode)).title).toBe(
+          ROBUSTNESS_TITLES.unicode,
+        );
       });
     },
   );
@@ -257,12 +259,10 @@ test.describe('POST /api/v1/Books', () => {
     'POST /Books ignores additional unexpected properties in the returned representation',
     { tag: ['@robustness', '@regression'] },
     async ({ booksClient }) => {
-      const payload = await test.step(
-        'Build a payload that includes an unexpected extra property',
-        async () => {
+      const payload =
+        await test.step('Build a payload that includes an unexpected extra property', async () => {
           return BookBuilder.validBook().withAdditionalProperty('unexpectedField', 'x').build();
-        },
-      );
+        });
 
       const response = await test.step('Request POST /Books', async () => {
         return booksClient.createBook(payload);
@@ -323,9 +323,10 @@ test.describe('POST /api/v1/Books', () => {
         return JSON.stringify(BookBuilder.validBook().build());
       });
 
-      const response = await test.step('Request POST /Books with Content-Type text/plain', async () => {
-        return booksClient.createBookRaw(payload, { 'Content-Type': 'text/plain' });
-      });
+      const response =
+        await test.step('Request POST /Books with Content-Type text/plain', async () => {
+          return booksClient.createBookRaw(payload, { 'Content-Type': 'text/plain' });
+        });
 
       await test.step('Assert HTTP 415 ProblemDetails for unsupported media type', async () => {
         expect(response.status()).toBe(415);

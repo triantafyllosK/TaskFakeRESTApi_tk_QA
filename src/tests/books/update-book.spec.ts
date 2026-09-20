@@ -51,11 +51,12 @@ test.describe('PUT /api/v1/Books/{id}', () => {
     async ({ booksClient }) => {
       const requestedId = SEEDED_BOOK_IDS.first;
 
-      const response = await test.step(`Request PUT /Books/${requestedId} with title only`, async () => {
-        return booksClient.updateBook(requestedId, {
-          title: 'only-title',
+      const response =
+        await test.step(`Request PUT /Books/${requestedId} with title only`, async () => {
+          return booksClient.updateBook(requestedId, {
+            title: 'only-title',
+          });
         });
-      });
 
       await test.step('Assert HTTP 200 and remaining fields use .NET defaults', async () => {
         expect(response.status()).toBe(200);
@@ -78,9 +79,10 @@ test.describe('PUT /api/v1/Books/{id}', () => {
       const pathId = 5;
       const bodyId = 99;
 
-      const payload = await test.step('Build a payload whose ID differs from the path ID', async () => {
-        return BookBuilder.validBook().withId(bodyId).withTitle('path-vs-body').build();
-      });
+      const payload =
+        await test.step('Build a payload whose ID differs from the path ID', async () => {
+          return BookBuilder.validBook().withId(bodyId).withTitle('path-vs-body').build();
+        });
 
       const response = await test.step(`Request PUT /Books/${pathId}`, async () => {
         return booksClient.updateBook(pathId, payload);

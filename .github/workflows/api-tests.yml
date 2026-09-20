@@ -1,0 +1,220 @@
+name: API Tests - CI Schedule
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Test suite to run
+        type: choice
+        default: full
+        options: [smoke, contract, regression, full]
+  schedule:
+    - cron: '0 8 * * *'
+
+# Cancel obsolete PR checks, but let publishing runs finish safely.
+concurrency:
+  group: api-tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  api-tests:
+    name: Quality gates and API tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      report_ready: ${{ steps.validate-report.outputs.ready }}
+      artifact_id: ${{ steps.artifacts.outputs.artifact-id }}
+    env:
+      BASE_URL: https://fakerestapi.azurewebsites.net
+      TEST_ENV: ci
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 24 LTS
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run API tests
+        id: tests
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SUITE: ${{ inputs.suite }}
+        run: |
+          case "$EVENT_NAME" in
+            pull_request) npx playwright test --grep "@smoke|@contract" ;;
+            workflow_dispatch)
+              case "$SUITE" in
+                smoke) npm run test:smoke ;;
+                contract) npm run test:contract ;;
+                regression) npm run test:regression ;;
+                *) npm test ;;
+              esac
+              ;;
+            *) npm test ;;
+          esac
+
+      - name: Check for test results
+        id: results
+        if: ${{ !cancelled() && (steps.tests.outcome == 'success' || steps.tests.outcome == 'failure') }}
+        run: |
+          if find allure-results -maxdepth 1 -type f -name '*-result.json' -print -quit | grep -q .; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No Allure test results were produced. The published report will remain unchanged."
+            exit 1
+          fi
+
+      # Artifact reports are independent of the shared Pages history.
+      - name: Generate artifact report
+        id: report
+        if: ${{ !cancelled() && steps.results.outputs.ready == 'true' }}
+        run: npm run report:generate
+
+      - name: Validate artifact report
+        id: validate-report
+        if: ${{ !cancelled() && steps.report.outcome == 'success' }}
+        run: |
+          test -s allure-report/index.html
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload reporting artifacts
+        id: artifacts
+        if: ${{ !cancelled() && steps.results.outputs.ready == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-test-reports
+          path: |
+            allure-results
+            allure-report
+            test-results/junit-results.xml
+          if-no-files-found: error
+          retention-days: 10
+
+  publish:
+    name: Update Allure Pages snapshot
+    needs: api-tests
+    # A failed test job may still produce a valid report. Partial suites and PRs
+    # never replace the full-suite snapshot or append to its history.
+    if: >-
+      ${{ !cancelled() &&
+          needs.api-tests.outputs.report_ready == 'true' &&
+          needs.api-tests.outputs.artifact_id != '' &&
+          github.event_name != 'pull_request' &&
+          github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+          (github.event_name != 'workflow_dispatch' || inputs.suite == 'full') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    # Serialize the entire history read / generate / write transaction.
+    concurrency:
+      group: allure-gh-pages
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js 24 LTS
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+      - name: Download results and artifact report
+        uses: actions/download-artifact@v8
+        with:
+          name: api-test-reports
+          path: .
+
+      - name: Restore and validate Pages history
+        run: |
+          # Exit 2 means no matching branch. Network/auth failures must stop deployment.
+          status=0
+          git ls-remote --exit-code --heads origin refs/heads/gh-pages > /dev/null || status=$?
+          case "$status" in
+            0)
+              git fetch --no-tags --depth=1 origin refs/heads/gh-pages
+              git show FETCH_HEAD:history.jsonl > allure-history.jsonl
+              node scripts/validate-allure-history.mjs allure-history.jsonl
+              ;;
+            2) echo "First publication: gh-pages does not exist yet." ;;
+            *) echo "::error::Cannot check existing Pages history; publication stopped."; exit "$status" ;;
+          esac
+
+      - name: Generate Pages report with shared history
+        run: npm run report:generate
+
+      - name: Validate Pages snapshot
+        run: |
+          test -s allure-report/index.html
+          node scripts/validate-allure-history.mjs allure-history.jsonl
+          cp allure-history.jsonl allure-report/history.jsonl
+
+      - name: Upload Pages snapshot artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-pages-snapshot
+          path: allure-report
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Push report to gh-pages
+        id: publish
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          force_orphan: true
+          enable_jekyll: false
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: Publish Allure report for ${{ github.sha }}
+
+      - name: Write publication outcome
+        if: ${{ !cancelled() }}
+        env:
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+          REPOSITORY: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          {
+            echo "## Allure report"
+            if [ "$PUBLISH_OUTCOME" = "success" ]; then
+              echo "Report and history pushed to gh-pages. GitHub Pages deployment may still be in progress."
+              echo "Expected site URL (without a custom domain): https://${OWNER}.github.io/${REPO_NAME}/"
+              echo "Check deployment status: https://github.com/${REPOSITORY}/actions"
+            else
+              echo "Pages publication did not complete successfully. Check this job's logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

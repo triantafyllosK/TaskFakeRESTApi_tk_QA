@@ -8,6 +8,10 @@ import path from 'node:path';
  *
  * Wipe the folder at the start of each Playwright process. Workers share this
  * globalSetup, so parallel tests in the same run still write into one launch.
+ *
+ * This does not delete Allure 3 history. Trends live in allure-history.jsonl
+ * (allurerc.mjs historyPath), which CI restores from gh-pages after tests and
+ * before `allure generate`.
  */
 export default async function cleanAllureResults(): Promise<void> {
   const resultsDir = path.resolve('allure-results');

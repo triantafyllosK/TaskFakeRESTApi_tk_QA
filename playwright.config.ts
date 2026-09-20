@@ -9,7 +9,8 @@ import { environment } from './src/config/environment';
  */
 export default defineConfig({
   testDir: './src/tests',
-  // See src/setup/clean-allure-results.ts for CI / history constraints.
+  // Wipes allure-results/ per launch. Cross-run Allure 3 history lives in
+  // allure-history.jsonl (see allurerc.mjs), so this cleanup does not drop trends.
   globalSetup: './src/setup/clean-allure-results.ts',
   timeout: 45_000,
   expect: {

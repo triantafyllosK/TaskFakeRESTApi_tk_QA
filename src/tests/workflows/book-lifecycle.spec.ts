@@ -20,16 +20,17 @@ test.describe('Books business workflow', () => {
           .build();
       });
 
-      const created = await test.step('POST /Books and assert the echoed representation', async () => {
-        const createResponse = await booksClient.createBook(createPayload);
-        expect(createResponse.status()).toBe(200);
-        expectJsonContentType(createResponse);
+      const created =
+        await test.step('POST /Books and assert the echoed representation', async () => {
+          const createResponse = await booksClient.createBook(createPayload);
+          expect(createResponse.status()).toBe(200);
+          expectJsonContentType(createResponse);
 
-        const createdBook = assertBookContract(await readJsonBody(createResponse));
-        expect(createdBook.title).toBe(createdTitle);
-        expect(createdBook.pageCount).toBe(180);
-        return createdBook;
-      });
+          const createdBook = assertBookContract(await readJsonBody(createResponse));
+          expect(createdBook.title).toBe(createdTitle);
+          expect(createdBook.pageCount).toBe(180);
+          return createdBook;
+        });
 
       await test.step('GET /Books/{id} after create and assert the ID is not persisted', async () => {
         const getAfterCreate = await booksClient.getBookById(created.id);
@@ -39,13 +40,14 @@ test.describe('Books business workflow', () => {
         ).toBe(404);
       });
 
-      const updatePayload = await test.step('Build an updated representation for the created ID', async () => {
-        return BookBuilder.validBook()
-          .withId(created.id)
-          .withTitle(updatedTitle)
-          .withPageCount(220)
-          .build();
-      });
+      const updatePayload =
+        await test.step('Build an updated representation for the created ID', async () => {
+          return BookBuilder.validBook()
+            .withId(created.id)
+            .withTitle(updatedTitle)
+            .withPageCount(220)
+            .build();
+        });
 
       await test.step('PUT /Books/{id} and assert the echoed updated representation', async () => {
         const updateResponse = await booksClient.updateBook(created.id, updatePayload);

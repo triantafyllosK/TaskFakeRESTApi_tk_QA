@@ -1,0 +1,20 @@
+# Keep the Docker build context small and avoid leaking local state.
+# The image installs dependencies with npm ci; it must not copy a host node_modules tree.
+
+node_modules
+npm-debug.log*
+allure-results
+allure-report
+allure-history.jsonl
+test-results
+playwright-report
+blob-report
+dist
+.git
+.github
+.env
+logs
+scripts
+*.log
+.DS_Store
+Thumbs.db

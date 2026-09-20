@@ -5,7 +5,9 @@
  * `allure-results/` has newer payloads.
  *
  * This script deletes only the generated HTML. It never deletes `allure-results`
- * because that directory is the input of `allure generate`.
+ * because that directory is the input of `allure generate`. It also never
+ * deletes `allure-history.jsonl` (Allure 3 historyPath in allurerc.mjs), which
+ * lives next to the report and must survive this wipe so generate can append.
  */
 import fs from 'node:fs';
 import path from 'node:path';

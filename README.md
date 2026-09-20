@@ -78,3 +78,25 @@ A successful test may assert three layers:
 - Node.js 24 LTS
 - npm
 - Docker (optional, for containerized runs)
+
+## CI reports and GitHub Pages
+
+Pushes to main/master and nightly runs execute the full suite. Pull requests run
+smoke and contract tests. Manual runs use the selected suite. Only full runs on
+the repository default branch can publish the shared Pages report.
+
+The test job has read-only repository access and uploads `api-test-reports` for
+10 days, including when tests fail and reporting succeeds. The separate publish
+job has write access and serializes history restoration, report generation, and
+the push to `gh-pages`. Its `allure-pages-snapshot` artifact includes the shared
+history and final report. Failed tests remain a failed workflow even when their
+report is published successfully.
+
+An absent `gh-pages` branch is treated as the first publication. An existing
+branch must contain a valid, nonempty Allure 3 `history.jsonl`; missing or corrupt
+history and retrieval failures stop publication to preserve the current site.
+If migrating an older branch without history, restore a valid history file before
+running this workflow. Do not silently reset history to work around a fetch error.
+The history retains up to 20 runs; old mixed-suite entries age out naturally.
+Check the Pages deployment in Actions before checking the site.
+Docker remains an optional local test runner; this workflow uses Node directly.
