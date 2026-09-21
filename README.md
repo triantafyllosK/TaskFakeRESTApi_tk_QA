@@ -79,10 +79,101 @@ A successful test may assert three layers:
 - npm
 - Docker (optional, for containerized runs)
 
+## Installation
+
+```bash
+npm ci
+```
+
+Use `npm ci` in CI, Docker, and local setup so the lockfile is the source of truth. Browser install is skipped via `.npmrc` (`playwright_skip_browser_download=1`).
+
+Copy `.env.example` to `.env` for local convenience. Missing values fall back to the public FakeRestAPI, so a first clone can run without this file. Prefer an explicit `.env` or injected CI variables.
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+CI must inject `BASE_URL` and `TEST_ENV` as environment variables. Never commit `.env`, credentials, or tokens.
+
+## Running Tests
+
+```bash
+npm test
+```
+
+## Running Specific Suites
+
+```bash
+npm run test:smoke
+npm run test:regression
+npm run test:contract
+npm run test:negative
+npm run test:workflow
+npm run test:robustness
+```
+
+Equivalent grep:
+
+```bash
+npx playwright test --grep "@smoke"
+npx playwright test --grep "@regression"
+npx playwright test --grep "@contract"
+npx playwright test --grep "@negative"
+npx playwright test --grep "@workflow"
+npx playwright test --grep "@robustness"
+```
+
+Quality gates:
+
+```bash
+npm run lint
+npm run typecheck
+npm run format:check
+```
+
+## Environment Configuration
+
+| Variable   | Purpose                       | Example                                 |
+| ---------- | ----------------------------- | --------------------------------------- |
+| `BASE_URL` | API origin, no trailing slash | `https://fakerestapi.azurewebsites.net` |
+| `TEST_ENV` | Allure environment label only | `local`, `qa`, `staging`, `ci`, `docker` |
+
+`TEST_ENV` is a report label. It does not change test logic. Docker examples use `docker`; CI injects `ci`.
+
+Tests never hardcode the base URL. Changing environment does not require changing test source.
+
+## Generate Allure Report
+
+Allure Report 3 is a local npm dependency. Do not install a global Allure CLI. Do not install Java for reporting.
+
+Use the npm script. It deletes the previous `allure-report/` directory and then generates a fresh report. Allure Report 3 has no Allure 2 `--clean` flag, so a leftover `index.html` can keep showing an old run if generate is invoked alone:
+
+```bash
+npm run report:generate
+```
+
+That script is equivalent to:
+
+```bash
+node scripts/clean-allure-report.mjs
+npx allure generate allure-results --output allure-report
+```
+
+## Open Allure Report
+
+```bash
+npm run report:open
+```
+
+On failure, Allure includes an **API call diagnostics** attachment (method, URL, redacted headers, request body, status, response headers, response body). Successful tests do not dump payloads.
+
 ## CI reports and GitHub Pages
 
 Pushes to main/master and nightly runs execute the full suite. Pull requests run
-smoke and contract tests. Manual runs use the selected suite. Only full runs on
+smoke and contract tests. Manual `workflow_dispatch` runs the selected suite:
+`smoke`, `contract`, `regression`, or `full`. Only full runs on
 the repository default branch can publish the shared Pages report.
 
 The test job has read-only repository access and uploads `api-test-reports` for
@@ -100,3 +191,44 @@ running this workflow. Do not silently reset history to work around a fetch erro
 The history retains up to 20 runs; old mixed-suite entries age out naturally.
 Check the Pages deployment in Actions before checking the site.
 Docker remains an optional local test runner; this workflow uses Node directly.
+
+## Docker
+
+This is an API-only image based on `node:24-bookworm-slim`. It does not install Chromium, Firefox, or WebKit and does not run `npx playwright install`.
+
+Build:
+
+```bash
+docker build -t fakerestapi-books-tests .
+```
+
+Run tests and collect raw results (Linux / macOS):
+
+```bash
+docker run --rm \
+  -e BASE_URL=https://fakerestapi.azurewebsites.net \
+  -e TEST_ENV=docker \
+  -v "$(pwd)/allure-results:/app/allure-results" \
+  -v "$(pwd)/test-results:/app/test-results" \
+  fakerestapi-books-tests
+```
+
+PowerShell:
+
+```powershell
+docker build -t fakerestapi-books-tests .
+docker run --rm `
+  -e BASE_URL=https://fakerestapi.azurewebsites.net `
+  -e TEST_ENV=docker `
+  -v "${PWD}/allure-results:/app/allure-results" `
+  -v "${PWD}/test-results:/app/test-results" `
+  fakerestapi-books-tests
+```
+
+The container runs tests only. Generate the Allure static report on the host or in CI:
+
+```bash
+npm run report:generate
+```
+
+Docker Compose is not used. There is no second service to orchestrate.
