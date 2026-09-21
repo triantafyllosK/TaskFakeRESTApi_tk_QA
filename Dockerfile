@@ -11,7 +11,7 @@ ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ENV NPM_CONFIG_PRODUCTION=false
 
 # Copy lockfiles first so dependency layers are reused when only source changes.
-COPY package.json package-lock.json .npmrc ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
 # Copy the remaining project files after dependencies are installed.

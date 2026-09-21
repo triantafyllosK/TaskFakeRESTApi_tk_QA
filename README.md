@@ -85,7 +85,7 @@ A successful test may assert three layers:
 npm ci
 ```
 
-Use `npm ci` in CI, Docker, and local setup so the lockfile is the source of truth. Browser install is skipped via `.npmrc` (`playwright_skip_browser_download=1`).
+Use `npm ci` locally, in CI, and in Docker. The pinned `@playwright/test` and `playwright` packages do not download browsers during dependency installation. This API-only project does not need `npx playwright install`. CI and Docker retain `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` as an explicit safeguard.
 
 Copy `.env.example` to `.env` for local convenience. Missing values fall back to the public FakeRestAPI, so a first clone can run without this file. Prefer an explicit `.env` or injected CI variables.
 
@@ -135,9 +135,9 @@ npm run format:check
 
 ## Environment Configuration
 
-| Variable   | Purpose                       | Example                                 |
-| ---------- | ----------------------------- | --------------------------------------- |
-| `BASE_URL` | API origin, no trailing slash | `https://fakerestapi.azurewebsites.net` |
+| Variable   | Purpose                       | Example                                  |
+| ---------- | ----------------------------- | ---------------------------------------- |
+| `BASE_URL` | API origin, no trailing slash | `https://fakerestapi.azurewebsites.net`  |
 | `TEST_ENV` | Allure environment label only | `local`, `qa`, `staging`, `ci`, `docker` |
 
 `TEST_ENV` is a report label. It does not change test logic. Docker examples use `docker`; CI injects `ci`.
