@@ -1,0 +1,1 @@
+{"id":"ecf3e94e117c42b3a70949993bbedd6c","fullName":"books/update-book.spec.ts › PUT /api/v1/Books/{id} › PUT /Books/{id} echoes a valid updated representation","name":"PUT /Books/{id} echoes a valid updated representation","status":"passed","testResultsByEnv":{"default":"5db739c35f518b7aff62c3fcdcbc0dec"}}

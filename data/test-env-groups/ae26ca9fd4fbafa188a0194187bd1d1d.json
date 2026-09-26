@@ -1,0 +1,1 @@
+{"id":"ae26ca9fd4fbafa188a0194187bd1d1d","fullName":"books/update-book.spec.ts › PUT /api/v1/Books/{id} › PUT /Books/{id} uses the body ID rather than the path ID in the returned representation","name":"PUT /Books/{id} uses the body ID rather than the path ID in the returned representation","status":"passed","testResultsByEnv":{"default":"4b3e4ed90710a4c9b84e7db729ee66d2"}}

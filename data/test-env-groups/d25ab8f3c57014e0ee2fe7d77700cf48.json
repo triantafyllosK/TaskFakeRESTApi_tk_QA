@@ -1,0 +1,1 @@
+{"id":"d25ab8f3c57014e0ee2fe7d77700cf48","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books ignores additional unexpected properties in the returned representation","name":"POST /Books ignores additional unexpected properties in the returned representation","status":"passed","testResultsByEnv":{"default":"18cc07325a014fcce731095c914364a5"}}

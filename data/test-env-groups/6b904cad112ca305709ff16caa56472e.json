@@ -1,0 +1,1 @@
+{"id":"6b904cad112ca305709ff16caa56472e","fullName":"books/delete-book.spec.ts › DELETE /api/v1/Books/{id} › DELETE /Books/{id} with a non-numeric path value returns HTTP 400","name":"DELETE /Books/{id} with a non-numeric path value returns HTTP 400","status":"passed","testResultsByEnv":{"default":"8a8f9c6568347bd92d559320bc71e7bc"}}

@@ -1,0 +1,1 @@
+{"id":"bbfbefc2106b3b39d1d1534e9812c404","fullName":"books/update-book.spec.ts › PUT /api/v1/Books/{id} › PUT /Books/{id} returns HTTP 200 for zero, negative, and non-existing IDs","name":"PUT /Books/{id} returns HTTP 200 for zero, negative, and non-existing IDs","status":"passed","testResultsByEnv":{"default":"536199e04a18676efa90d0e8ad39ac70"}}

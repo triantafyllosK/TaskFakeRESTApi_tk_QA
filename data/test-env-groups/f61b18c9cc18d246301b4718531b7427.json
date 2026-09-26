@@ -1,0 +1,1 @@
+{"id":"f61b18c9cc18d246301b4718531b7427","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts special characters and Unicode in title","name":"POST /Books accepts special characters and Unicode in title","status":"passed","testResultsByEnv":{"default":"973f0d30844111806c3e31cf1fad6319"}}

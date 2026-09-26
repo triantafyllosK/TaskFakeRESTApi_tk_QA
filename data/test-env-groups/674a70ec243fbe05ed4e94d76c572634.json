@@ -1,0 +1,1 @@
+{"id":"674a70ec243fbe05ed4e94d76c572634","fullName":"books/delete-book.spec.ts › DELETE /api/v1/Books/{id} › DELETE /Books/{id} returns HTTP 200 for zero, negative, missing, and very large IDs","name":"DELETE /Books/{id} returns HTTP 200 for zero, negative, missing, and very large IDs","status":"passed","testResultsByEnv":{"default":"94cbf86c18453877183235ab8b180d59"}}

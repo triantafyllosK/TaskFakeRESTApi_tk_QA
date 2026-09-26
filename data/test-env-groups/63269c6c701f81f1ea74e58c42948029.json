@@ -1,0 +1,1 @@
+{"id":"63269c6c701f81f1ea74e58c42948029","fullName":"books/get-books.spec.ts › GET /api/v1/Books › GET /Books returns HTTP 200 JSON and a non-empty collection","name":"GET /Books returns HTTP 200 JSON and a non-empty collection","status":"passed","testResultsByEnv":{"default":"2a68dcda739ebc52a5e3b432df8c669b"}}

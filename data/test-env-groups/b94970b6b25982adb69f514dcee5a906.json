@@ -1,0 +1,1 @@
+{"id":"b94970b6b25982adb69f514dcee5a906","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books rejects an incorrect Content-Type with HTTP 415","name":"POST /Books rejects an incorrect Content-Type with HTTP 415","status":"passed","testResultsByEnv":{"default":"7504f6b6c588db8f4bb71e4901fffbf7"}}

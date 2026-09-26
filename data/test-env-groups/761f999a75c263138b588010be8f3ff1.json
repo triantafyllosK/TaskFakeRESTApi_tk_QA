@@ -1,0 +1,1 @@
+{"id":"761f999a75c263138b588010be8f3ff1","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts a zero pageCount","name":"POST /Books accepts a zero pageCount","status":"passed","testResultsByEnv":{"default":"65310cdef38005c954ad240284f69e80"}}

@@ -1,0 +1,1 @@
+{"id":"3c7cac0b9d31b6732df7bfa75bd4be8f","fullName":"books/update-book.spec.ts › PUT /api/v1/Books/{id} › PUT /Books/{id} rejects an invalid publishDate with HTTP 400","name":"PUT /Books/{id} rejects an invalid publishDate with HTTP 400","status":"passed","testResultsByEnv":{"default":"5db4260b29e1780ce5d71881c8405564"}}

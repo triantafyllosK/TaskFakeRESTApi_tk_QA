@@ -1,0 +1,1 @@
+{"id":"73f4ec6a384bde5fa44bb73455dacd89","fullName":"contract/books-contract.spec.ts › Books API contracts › GET /Books/{id} response satisfies the Book object contract","name":"GET /Books/{id} response satisfies the Book object contract","status":"passed","testResultsByEnv":{"default":"c50fd2f69c25a6a29343bc5ef963bd3f"}}

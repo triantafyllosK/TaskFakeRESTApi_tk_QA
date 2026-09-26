@@ -1,0 +1,1 @@
+{"id":"757f6f21a425b8ffd82800e64704cd7e","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books with an empty object uses .NET default values rather than HTTP 400","name":"POST /Books with an empty object uses .NET default values rather than HTTP 400","status":"passed","testResultsByEnv":{"default":"a8fc8f2bd476ae8eaafd5563a10f8b70"}}

@@ -1,0 +1,1 @@
+{"id":"a4ea2281c033ef633d11597c48c54fff","fullName":"books/get-book-by-id.spec.ts › GET /api/v1/Books/{id} › GET /Books/{id} returns HTTP 400 when the ID cannot bind to Int32","name":"GET /Books/{id} returns HTTP 400 when the ID cannot bind to Int32","status":"passed","testResultsByEnv":{"default":"ccec6867f5885bf51931f6804ea54c7a"}}

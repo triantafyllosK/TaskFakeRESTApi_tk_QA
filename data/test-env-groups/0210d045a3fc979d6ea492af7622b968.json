@@ -1,0 +1,1 @@
+{"id":"0210d045a3fc979d6ea492af7622b968","fullName":"books/get-book-by-id.spec.ts › GET /api/v1/Books/{id} › GET /Books/{id} returns HTTP 400 for a non-numeric path value","name":"GET /Books/{id} returns HTTP 400 for a non-numeric path value","status":"passed","testResultsByEnv":{"default":"17c05cf66dc954aa3d4d771570e6016b"}}

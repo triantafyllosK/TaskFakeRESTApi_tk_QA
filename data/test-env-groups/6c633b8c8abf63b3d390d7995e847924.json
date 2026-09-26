@@ -1,0 +1,1 @@
+{"id":"6c633b8c8abf63b3d390d7995e847924","fullName":"books/delete-book.spec.ts › DELETE /api/v1/Books/{id} › DELETE /Books/{id} does not remove a seeded book from subsequent GET requests","name":"DELETE /Books/{id} does not remove a seeded book from subsequent GET requests","status":"passed","testResultsByEnv":{"default":"b759cb41e6f1437503f9b7a8bc5f44ba"}}

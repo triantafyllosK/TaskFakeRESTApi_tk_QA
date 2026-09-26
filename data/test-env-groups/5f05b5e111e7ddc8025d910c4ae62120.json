@@ -1,0 +1,1 @@
+{"id":"5f05b5e111e7ddc8025d910c4ae62120","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts Int32.MaxValue pageCount and rejects Int32 overflow","name":"POST /Books accepts Int32.MaxValue pageCount and rejects Int32 overflow","status":"passed","testResultsByEnv":{"default":"cce124f1d1fe5b581e7e3c59364b29cf"}}

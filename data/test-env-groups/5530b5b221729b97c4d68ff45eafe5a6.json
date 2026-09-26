@@ -1,0 +1,1 @@
+{"id":"5530b5b221729b97c4d68ff45eafe5a6","fullName":"books/create-book.spec.ts › POST /api/v1/Books › PATCH /Books/{id} is not an allowed method","name":"PATCH /Books/{id} is not an allowed method","status":"passed","testResultsByEnv":{"default":"d77ea81d2891294c177da312d3d1e2fb"}}

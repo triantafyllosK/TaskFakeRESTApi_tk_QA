@@ -1,0 +1,1 @@
+{"id":"e2fecfcb3a4a1813657ddef5ced46204","fullName":"books/delete-book.spec.ts › DELETE /api/v1/Books/{id} › DELETE /Books/{id} returns HTTP 200 with an empty body for a valid seeded ID","name":"DELETE /Books/{id} returns HTTP 200 with an empty body for a valid seeded ID","status":"passed","testResultsByEnv":{"default":"555e7318a13d6e86bed80e780209e91b"}}

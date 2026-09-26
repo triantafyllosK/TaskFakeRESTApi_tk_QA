@@ -1,0 +1,1 @@
+{"id":"479d4f80c7850b3b57d44caeec82cefe","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts an empty title and returns it unchanged","name":"POST /Books accepts an empty title and returns it unchanged","status":"passed","testResultsByEnv":{"default":"f53d13522b5f892e28f041cd5f02d21a"}}

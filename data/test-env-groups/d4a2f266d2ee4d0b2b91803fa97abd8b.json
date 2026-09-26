@@ -1,0 +1,1 @@
+{"id":"d4a2f266d2ee4d0b2b91803fa97abd8b","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts a valid book payload and echoes the representation","name":"POST /Books accepts a valid book payload and echoes the representation","status":"passed","testResultsByEnv":{"default":"2aaff22caf4f3c2b4f311d2ae27f397f"}}
