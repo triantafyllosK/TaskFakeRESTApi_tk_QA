@@ -1,0 +1,1 @@
+{"id":"d4b8cf57cb38955699c88cb363535a3e","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books rejects malformed JSON with HTTP 400","name":"POST /Books rejects malformed JSON with HTTP 400","status":"passed","testResultsByEnv":{"default":"cb1f360f505f8fbd4010fa890ec67ced"}}

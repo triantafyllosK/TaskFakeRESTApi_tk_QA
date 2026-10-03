@@ -1,0 +1,1 @@
+{"id":"d83feb61c37ba040025947b7a48a5444","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books rejects an invalid publishDate with HTTP 400","name":"POST /Books rejects an invalid publishDate with HTTP 400","status":"passed","testResultsByEnv":{"default":"45fc5c52da6d557f353d41ed1b2e65b4"}}

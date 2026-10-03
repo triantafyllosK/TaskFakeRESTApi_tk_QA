@@ -1,0 +1,1 @@
+{"id":"4adc6a548a1e04b6159bda7518f62d6e","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books rejects a non-numeric pageCount with HTTP 400","name":"POST /Books rejects a non-numeric pageCount with HTTP 400","status":"passed","testResultsByEnv":{"default":"a830931af2a36f2162289b9c82f02ca7"}}
