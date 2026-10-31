@@ -1,0 +1,1 @@
+{"id":"127affa8935de948d5fe5fbe784d0178","fullName":"books/create-book.spec.ts › POST /api/v1/Books › POST /Books accepts a negative pageCount","name":"POST /Books accepts a negative pageCount","status":"passed","testResultsByEnv":{"default":"642e82044a67f8b50ededcca99b03b37"}}
